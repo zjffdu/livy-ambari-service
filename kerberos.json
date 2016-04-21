@@ -1,0 +1,67 @@
+{
+  "services": [
+    {
+      "name": "LIVY",
+      "identities": [
+        {
+          "name": "/smokeuser"
+        },
+        {
+          "name": "livyuser",
+          "principal": {
+            "value": "livy@${realm}",
+            "type" : "service",
+            "configuration": "livy-defaults/livy.server.kerberos.principal",
+            "local_username": "${livy-env/livy_user}"
+          },
+          "keytab": {
+            "file": "${keytab_dir}/livy.keytab",
+            "owner": {
+              "name": "${livy-env/livy_user}",
+              "access": "r"
+            },
+            "group": {
+              "name": "${cluster-env/user_group}",
+              "access": ""
+            },
+            "configuration": "livy-defaults/livy.server.kerberos.keytab"
+          }
+        },
+        {
+          "name": "/spnego",
+          "principal": {
+            "configuration": "livy-defaults/livy.server.auth.kerberos.principal"
+          },
+          "keytab": {
+            "configuration": "livy-defaults/livy.server.auth.kerberos.keytab"
+          }
+        }
+
+      ],
+      "configurations": [
+        {
+          "livy-defaults": {
+            "livy.server.auth.type": "kerberos",
+            "livy.impersonation.enabled": "true"
+          }
+        },
+        {
+          "core-site": {
+            "hadoop.proxyuser.${livy-env/livy_user}.groups": "*",
+            "hadoop.proxyuser.${livy-env/livy_user}.hosts": "*"
+          }
+        }
+      ],
+      "components": [
+        {
+          "name": "LIVY_SERVER",
+          "identities": [
+            {
+              "name": "/HDFS/NAMENODE/hdfs"
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}
