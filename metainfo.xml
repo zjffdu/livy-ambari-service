@@ -24,7 +24,7 @@
             <name>LIVY</name>
             <displayName>Livy</displayName>
             <comment>Livy is an open source REST interface for interacting with Spark from anywhere.</comment>
-            <version>0.1</version>
+            <version>0.1.0.2.4</version>
 
             <components>
                 <component>
