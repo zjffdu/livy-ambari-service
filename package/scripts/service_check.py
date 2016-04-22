@@ -33,9 +33,10 @@ class SparkServiceCheck(Script):
 
     if params.livy_livyserver_host != "localhost" and params.livy_livyserver_host != "0.0.0.0":
       Execute(format("curl -s -o /dev/null -w'%{{http_code}}' --negotiate -u: -k http://{livy_livyserver_host}:{livy_livyserver_port}/sessions | grep 200"),
-              tries = 10,
+              tries=10,
               try_sleep=3,
-              logoutput=True
+              logoutput=True,
+              user=params.livy_user
               )
 
 if __name__ == "__main__":
